@@ -1,25 +1,41 @@
 package petros.efthymiou.groovy.ui.adapters
 
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 
 import androidx.recyclerview.widget.RecyclerView
+import petros.efthymiou.groovy.R
+import petros.efthymiou.groovy.databinding.PlaylistItemBinding
 import petros.efthymiou.groovy.domain.PlayList
 
 class PlayListsAdapter: ListAdapter<PlayList, PlayListsAdapter.PlayListsViewHolder>(DiffCallBack) {
 
+private lateinit var binding: PlaylistItemBinding
 
-
-    class PlayListsViewHolder(val view: View):RecyclerView.ViewHolder(view)
+    class PlayListsViewHolder(val binding: PlaylistItemBinding):RecyclerView.ViewHolder(binding.root)
+    {
+        fun bind(item:PlayList)
+        {
+            binding.playListImage.setImageResource(item.image)
+            binding.playListCategory.text = item.category
+            binding.playListName.text = item.name
+        }
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlayListsViewHolder {
-        TODO("Not yet implemented")
+        binding = DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.playlist_item,parent,
+        false)
+
+        return PlayListsViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: PlayListsViewHolder, position: Int) {
-        TODO("Not yet implemented")
+        val playList = getItem(position)
+        holder.bind(playList)
     }
 
     companion object  DiffCallBack: DiffUtil.ItemCallback<PlayList>()
