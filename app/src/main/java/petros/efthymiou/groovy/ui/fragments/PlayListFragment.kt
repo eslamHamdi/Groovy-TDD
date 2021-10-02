@@ -7,13 +7,18 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.InternalCoroutinesApi
 import petros.efthymiou.groovy.R
 import petros.efthymiou.groovy.databinding.FragmentPlayListBinding
 import petros.efthymiou.groovy.ui.adapters.PlayListsAdapter
 
 
+@AndroidEntryPoint
+@InternalCoroutinesApi
 class PlayListFragment : Fragment() {
 
+    @InternalCoroutinesApi
     val viewModel:MainViewModel by activityViewModels()
     lateinit var binding:FragmentPlayListBinding
 
@@ -44,9 +49,9 @@ class PlayListFragment : Fragment() {
         val recycler = binding.playListRecycler
         val adapter = PlayListsAdapter()
         viewModel.playList.observe(viewLifecycleOwner){
-            if (it.getOrNull() != null)
+            if (it != null)
             {
-                adapter.submitList(it.getOrNull()!!)
+                adapter.submitList(it)
                 recycler.adapter = adapter
             }
 
