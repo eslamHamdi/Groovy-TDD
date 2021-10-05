@@ -8,6 +8,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.adevinta.android.barista.assertion.BaristaRecyclerViewAssertions.assertRecyclerViewItemCount
 import com.adevinta.android.barista.assertion.BaristaVisibilityAssertions.assertDisplayed
 import com.adevinta.android.barista.internal.matcher.DrawableMatcher.Companion.withDrawable
+import kotlinx.coroutines.InternalCoroutinesApi
 import org.hamcrest.CoreMatchers.allOf
 
 
@@ -20,10 +21,12 @@ import petros.nthChildOf
 
 
 @RunWith(AndroidJUnit4::class)
+@InternalCoroutinesApi
 class PlayListFeature {
 
 
 
+    @InternalCoroutinesApi
     val mActivity = ActivityScenarioRule(MainActivity::class.java)
         @Rule get
     @Test

@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import petros.efthymiou.groovy.domain.DataSource
 import petros.efthymiou.groovy.domain.PlayList
+import petros.efthymiou.groovy.domain.Result
 import javax.inject.Inject
 
 @InternalCoroutinesApi
@@ -21,26 +22,33 @@ class MainViewModel @Inject constructor(private val repositoy:DataSource): ViewM
     val playList:LiveData<List<PlayList>>
             get() = _playLists
 
+    private val _errorState:MutableLiveData<String> = MutableLiveData()
+
+    val errorState:LiveData<String>
+        get() = _errorState
 
 
-    init {
+
+    suspend fun getPlayLists(){
+
         viewModelScope.launch {
             repositoy.getPlayLists().collect {
-                if (it.isSuccess)
+                if (it is Result.Success)
                 {
-                    _playLists.value = it.getOrNull()!!
+                    _playLists.value = it.data
                 }
-                else
+                else if (it is Result.Error)
                 {
+                    _errorState.value = it.message
 
                 }
             }
-
-
-
-
         }
+
+
+
     }
+
 
 
 }
