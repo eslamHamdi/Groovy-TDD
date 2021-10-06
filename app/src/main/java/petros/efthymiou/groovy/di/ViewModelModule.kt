@@ -8,20 +8,21 @@ import kotlinx.coroutines.InternalCoroutinesApi
 import petros.efthymiou.groovy.GroovyApp_HiltComponents
 import petros.efthymiou.groovy.domain.DataSource
 import petros.efthymiou.groovy.remote.PlayListService
+import petros.efthymiou.groovy.remote.RemoteService
 import petros.efthymiou.groovy.repositories.PlayListRepository
 import petros.efthymiou.groovy.ui.fragments.MainViewModel
 import javax.inject.Singleton
 
-@Module
+@Module(includes = [AppModule::class])
 @InstallIn(SingletonComponent::class)
-class ViewModelModule {
+object ViewModelModule {
 
 
     @Provides
     @Singleton
-    fun providesPlayListService():PlayListService
+    fun providesPlayListService(remoteService: RemoteService):PlayListService
     {
-        return PlayListService()
+        return PlayListService(remoteService)
     }
 
     @Provides

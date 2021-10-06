@@ -10,8 +10,8 @@ import javax.inject.Inject
 
 class PlayListRepository @Inject constructor(private val service: PlayListService) :DataSource  {
     override fun getPlayLists(): Flow<Result<List<PlayList>>> {
-        service.fetchPlayList()
 
-        return flow {  }
+
+        return service.fetchPlayList()
     }
 }
