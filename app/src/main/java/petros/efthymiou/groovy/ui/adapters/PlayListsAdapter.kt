@@ -16,19 +16,18 @@ class PlayListsAdapter: ListAdapter<PlayList, PlayListsAdapter.PlayListsViewHold
 
 private lateinit var binding: PlaylistItemBinding
 
-    class PlayListsViewHolder(val binding: PlaylistItemBinding):RecyclerView.ViewHolder(binding.root)
+    class PlayListsViewHolder(private val binding: PlaylistItemBinding):RecyclerView.ViewHolder(binding.root)
     {
         fun bind(item:PlayList)
         {
-            binding.playListImage.setImageResource(item.image)
+            binding.playListImage.setImageResource(R.mipmap.playlist)
             binding.playListCategory.text = item.category
             binding.playListName.text = item.name
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlayListsViewHolder {
-        binding = DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.playlist_item,parent,
-        false)
+        binding = PlaylistItemBinding.inflate(LayoutInflater.from(parent.context),parent,false)
 
         return PlayListsViewHolder(binding)
     }

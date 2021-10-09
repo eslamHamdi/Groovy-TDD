@@ -1,14 +1,19 @@
 package petros.efthymiou.groovy.ui.fragments
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.InternalCoroutinesApi
+import kotlinx.coroutines.launch
 import petros.efthymiou.groovy.R
 import petros.efthymiou.groovy.databinding.FragmentPlayListBinding
 import petros.efthymiou.groovy.ui.adapters.PlayListsAdapter
@@ -19,14 +24,11 @@ import petros.efthymiou.groovy.ui.adapters.PlayListsAdapter
 class PlayListFragment : Fragment() {
 
     @InternalCoroutinesApi
-    val viewModel:MainViewModel by activityViewModels()
+    //val viewModel:MainViewModel by activityViewModels()
+    private val viewModel:MainViewModel by viewModels()
     lateinit var binding:FragmentPlayListBinding
+    lateinit var adapter:PlayListsAdapter
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,27 +36,44 @@ class PlayListFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
 
-        binding = DataBindingUtil.inflate(inflater,R.layout.fragment_play_list, container, false)
+
+        binding = FragmentPlayListBinding.inflate(layoutInflater)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.lifecycleOwner = this
 
+        Log.e(null, "onCreateView: created", )
+        //binding.lifecycleOwner = this
+        adapter = PlayListsAdapter()
+
+        val recycler = binding.playListRecycler
+        recycler.adapter = adapter
+        getAdapterList()
         observe()
     }
 
     private fun observe() {
-        val recycler = binding.playListRecycler
-        val adapter = PlayListsAdapter()
+
         viewModel.playList.observe(viewLifecycleOwner){
+            Log.e(null, "observe: entered", )
             if (it != null)
             {
+                Log.e(null, "observe: $it ", )
+
                 adapter.submitList(it)
-                recycler.adapter = adapter
+
             }
 
+        }
+    }
+
+    private fun getAdapterList()
+    {
+        Log.e(null, "getAdapterList: entered ", )
+        lifecycleScope.launch {
+            viewModel.getPlayLists()
         }
     }
 

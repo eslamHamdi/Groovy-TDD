@@ -5,5 +5,5 @@ import kotlinx.coroutines.flow.Flow
 interface DataSource {
 
 
-    fun getPlayLists(): Flow<Result<List<PlayList>>>
+   suspend fun getPlayLists(): Flow<Result<List<PlayList>>>
 }

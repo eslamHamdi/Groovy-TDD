@@ -1,5 +1,6 @@
 package petros.efthymiou.groovy.ui.fragments
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -35,11 +36,16 @@ class MainViewModel @Inject constructor(private val repositoy:DataSource): ViewM
             repositoy.getPlayLists().collect {
                 if (it is Result.Success)
                 {
-                    _playLists.value = it.data
+                    _playLists.postValue(it.data)
+                    Log.e(null, "getPlayLists: success ", )
                 }
                 else if (it is Result.Error)
                 {
-                    _errorState.value = it.message
+                    _errorState.postValue(it.message)
+
+                    Log.e(null, "getPlayLists: ${it.message}", )
+
+
 
                 }
             }

@@ -53,12 +53,13 @@ class PlayListRepositoryShould
     }
 
     @Test
-    fun invokeServiceFetchPlayList()
-    {
+    fun invokeServiceFetchPlayList()= runBlockingTest {
+
         repository?.getPlayLists()
 
         verify(service, times(1))?.fetchPlayList()
     }
+
 
     @Test
     fun emitTheSameListObtainedFromService()= runBlockingTest {

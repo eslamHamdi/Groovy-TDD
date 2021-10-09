@@ -1,12 +1,16 @@
 package petros.efthymiou.groovy.di
 
-import android.content.Context
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import kotlinx.coroutines.InternalCoroutinesApi
+import okhttp3.OkHttpClient
+import petros.efthymiou.groovy.domain.DataSource
+import petros.efthymiou.groovy.remote.PlayListService
 import petros.efthymiou.groovy.remote.RemoteService
+import petros.efthymiou.groovy.repositories.PlayListRepository
+import petros.efthymiou.groovy.ui.fragments.MainViewModel
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
@@ -18,10 +22,11 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideRetrofit(@ApplicationContext context: Context):Retrofit
+    fun provideRetrofit():Retrofit
     {
         return Retrofit.Builder()
-            .baseUrl("http://localhost:3000/")
+            .baseUrl("http://10.0.2.2:2999")
+            .client(OkHttpClient())
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }
@@ -33,6 +38,27 @@ object AppModule {
         return retrofit.create(RemoteService::class.java)
     }
 
+    @Provides
+    @Singleton
+    fun providesPlayListService(remoteService: RemoteService): PlayListService
+    {
+        return PlayListService(remoteService)
+    }
+
+    @Provides
+    @Singleton
+    fun provideRepository(service: PlayListService): DataSource
+    {
+        return PlayListRepository(service)
+    }
+
+    @InternalCoroutinesApi
+    @Provides
+    @Singleton
+    fun provideMainViewModel(repository: DataSource): MainViewModel
+    {
+        return MainViewModel(repository)
+    }
 
 
 

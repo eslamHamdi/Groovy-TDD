@@ -19,7 +19,7 @@ class FakePlayListRepository:DataSource {
         failure = state
     }
 
-    override fun getPlayLists(): Flow<Result<List<PlayList>>>
+    override suspend fun getPlayLists(): Flow<Result<List<PlayList>>>
     {
 
 

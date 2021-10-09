@@ -9,7 +9,7 @@ import petros.efthymiou.groovy.remote.PlayListService
 import javax.inject.Inject
 
 class PlayListRepository @Inject constructor(private val service: PlayListService) :DataSource  {
-    override fun getPlayLists(): Flow<Result<List<PlayList>>> {
+    override suspend fun getPlayLists(): Flow<Result<List<PlayList>>> {
 
 
         return service.fetchPlayList()

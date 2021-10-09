@@ -10,20 +10,19 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.mockito.Mockito.mock
-import org.mockito.kotlin.mock
-import org.mockito.kotlin.times
-import org.mockito.kotlin.verify
-import org.mockito.kotlin.whenever
+import org.mockito.kotlin.*
 import petros.efthymiou.groovy.domain.PlayList
 import petros.efthymiou.groovy.domain.Result
 import petros.efthymiou.groovy.utils.MainCoroutineScopeRule
+import java.lang.Exception
+import java.lang.RuntimeException
 
 @ExperimentalCoroutinesApi
 class PlayListServiceShould
 {
     private var playListService:PlayListService? = null
     private var remoteService:RemoteService? = null
-    private val playList = mock<List<PlayList>>()
+    private val playList = mock<List<PlayListsRemoteItem>>()
 
     @get:Rule
     var coroutineTestRule = MainCoroutineScopeRule()
@@ -48,7 +47,7 @@ class PlayListServiceShould
 
     @Test
     fun getPlayListsFromRemoteService() = runBlockingTest {
-        playListService?.fetchPlayList()
+        playListService?.fetchPlayList()?.first()
 
        verify(remoteService, times(1))?.getList()
     }
@@ -59,10 +58,10 @@ class PlayListServiceShould
 
         whenever(remoteService?.getList()).thenReturn(playList)
 
-        val result = playListService?.fetchPlayList()?.first() as Result.Success
+        val result = playListService?.fetchPlayList()?.first()
 
 
-        assertThat(playList).isEqualTo(result.data)
+        assertThat(Result.Success(playList)).isEqualTo(result)
 
     }
 
@@ -70,12 +69,13 @@ class PlayListServiceShould
     @Test
     fun wrapTheErrorIntoResult() = runBlockingTest {
 
-        whenever(remoteService?.getList()).thenThrow(Exception("Failed To Get The List"))
+        //also we can use thenThrow(RunTimeException)
+        whenever(remoteService?.getList()).thenThrow(RuntimeException(""))
 
-        val result = playListService?.fetchPlayList()?.first() as Result.Error
+        val result:Result<List<PlayList>> = playListService?.fetchPlayList()?.first()!!
 
 
-        assertThat("Failed To Get The List").isEqualTo(result.message)
+        assertThat(Result.Error("Fetching List Failed!!")).isEqualTo(result)
 
     }
 
