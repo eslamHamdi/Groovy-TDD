@@ -6,6 +6,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.takeWhile
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.After
 
@@ -89,8 +90,16 @@ class PlayListRepositoryShould
         assertThat("Failed!!").isEqualTo(result.message)
 
 
+    }
 
+    @Test
+    fun propagateLoadingStatus()= runBlockingTest {
 
+        repository?.getPlayLists()?.takeWhile {
+            it is Result.Loading
+        }?.collect {
+            assertThat(it).isEqualTo(Result.Loading<List<PlayList>>())
+        }
 
     }
 

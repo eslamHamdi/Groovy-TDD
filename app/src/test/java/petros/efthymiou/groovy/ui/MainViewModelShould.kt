@@ -4,6 +4,7 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.After
 import org.junit.Before
@@ -12,7 +13,9 @@ import org.junit.Test
 import org.mockito.Mockito.mock
 import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
+import org.mockito.kotlin.whenever
 import petros.efthymiou.groovy.domain.DataSource
+import petros.efthymiou.groovy.domain.Result
 import petros.efthymiou.groovy.repositories.FakePlayListRepository
 import petros.efthymiou.groovy.ui.fragments.MainViewModel
 import petros.efthymiou.groovy.utils.MainCoroutineScopeRule
@@ -40,12 +43,14 @@ class MainViewModelShould {
         repository = FakePlayListRepository()
         viewModel = MainViewModel(repository!!as DataSource)
 
+
     }
     @After
     fun clean()
     {
         viewModel = null
         repository = null
+
 
     }
 
@@ -76,7 +81,7 @@ class MainViewModelShould {
 
         repository?.setError(true)
 
-        var expected ="Failed"
+        val expected ="Failed"
 
         viewModel?.getPlayLists()
 
@@ -87,9 +92,59 @@ class MainViewModelShould {
         }
 
 
+    @Test
+    fun showLoaderWhileGettigList()= runBlockingTest {
+
+        mockLoadingCase()
+
+        assertThat(viewModel!!.progressLiveData.getValueForTest()).isTrue()
+    }
 
 
 
+    @Test
+    fun hideLoaderWhenFetchingEnds()= runBlockingTest {
+
+        mockSuccessCase()
+
+        assertThat(viewModel!!.progressLiveData.getValueForTest()).isFalse()
+    }
+
+
+
+    @Test
+    fun hideLoaderWhenFetchingFails()= runBlockingTest {
+
+        mockErrorCase()
+
+        assertThat(viewModel!!.progressLiveData.getValueForTest()).isFalse()
+    }
+
+
+
+    private suspend fun mockLoadingCase() {
+        val repository = mock(FakePlayListRepository::class.java)
+
+        whenever(repository.getPlayLists()).thenReturn(flowOf(Result.Loading()))
+        viewModel = MainViewModel(repository)
+        viewModel!!.getPlayLists()
+    }
+
+    private suspend fun mockSuccessCase() {
+        val repository = mock(FakePlayListRepository::class.java)
+
+        whenever(repository.getPlayLists()).thenReturn(flowOf(Result.Success(listOf())))
+        viewModel = MainViewModel(repository)
+        viewModel!!.getPlayLists()
+    }
+
+    private suspend fun mockErrorCase() {
+        val repository = mock(FakePlayListRepository::class.java)
+
+        whenever(repository.getPlayLists()).thenReturn(flowOf(Result.Error("failed!!")))
+        viewModel = MainViewModel(repository)
+        viewModel!!.getPlayLists()
+    }
     }
 
 

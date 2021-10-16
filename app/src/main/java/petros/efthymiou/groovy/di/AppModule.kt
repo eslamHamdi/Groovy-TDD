@@ -1,5 +1,6 @@
 package petros.efthymiou.groovy.di
 
+import com.jakewharton.espresso.OkHttp3IdlingResource
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -24,6 +25,7 @@ object AppModule {
     @Singleton
     fun provideRetrofit():Retrofit
     {
+
         return Retrofit.Builder()
             .baseUrl("http://10.0.2.2:2999")
             .client(OkHttpClient())

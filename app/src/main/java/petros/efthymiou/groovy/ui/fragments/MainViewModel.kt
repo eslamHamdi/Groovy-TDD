@@ -12,6 +12,7 @@ import kotlinx.coroutines.launch
 import petros.efthymiou.groovy.domain.DataSource
 import petros.efthymiou.groovy.domain.PlayList
 import petros.efthymiou.groovy.domain.Result
+import petros.efthymiou.groovy.utils.wrapEspressoIdlingResource
 import javax.inject.Inject
 
 @InternalCoroutinesApi
@@ -28,28 +29,46 @@ class MainViewModel @Inject constructor(private val repositoy:DataSource): ViewM
     val errorState:LiveData<String>
         get() = _errorState
 
+    private var _progressLiveData:MutableLiveData<Boolean> = MutableLiveData(true)
+
+    val progressLiveData:LiveData<Boolean>
+    get() = _progressLiveData
+
+
+
 
 
     suspend fun getPlayLists(){
+         viewModelScope.launch {
 
-        viewModelScope.launch {
-            repositoy.getPlayLists().collect {
-                if (it is Result.Success)
-                {
-                    _playLists.postValue(it.data)
-                    Log.e(null, "getPlayLists: success ", )
-                }
-                else if (it is Result.Error)
-                {
-                    _errorState.postValue(it.message)
+ repositoy.getPlayLists().collect {
+    if (it is Result.Success)
+    {
+        _playLists.value =(it.data)
+        _progressLiveData.value = false
 
-                    Log.e(null, "getPlayLists: ${it.message}", )
+        Log.e(null, "getPlayLists: success ", )
+    }
+    else if (it is Result.Error)
+    {
+        _errorState.value =(it.message)
+        _progressLiveData.value = false
+
+        Log.e(null, "getPlayLists: ${it.message}", )
+
+
+    }else if (it is Result.Loading)
+    {
+        _progressLiveData.value =(true)
+    }
+}
 
 
 
-                }
-            }
         }
+
+
+
 
 
 

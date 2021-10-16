@@ -11,6 +11,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.transition.Visibility
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.launch
@@ -51,10 +52,11 @@ class PlayListFragment : Fragment() {
         val recycler = binding.playListRecycler
         recycler.adapter = adapter
         getAdapterList()
-        observe()
+        observeList()
+        observeLoader()
     }
 
-    private fun observe() {
+    private fun observeList() {
 
         viewModel.playList.observe(viewLifecycleOwner){
             Log.e(null, "observe: entered", )
@@ -65,7 +67,18 @@ class PlayListFragment : Fragment() {
                 adapter.submitList(it)
 
             }
+        }
 
+
+    }
+
+    private fun observeLoader()
+    {
+        viewModel.progressLiveData.observe(viewLifecycleOwner){
+            if (it)
+            binding.progressBar.visibility = View.VISIBLE
+            else
+                binding.progressBar.visibility = View.GONE
         }
     }
 

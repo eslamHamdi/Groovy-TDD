@@ -1,34 +1,34 @@
 package petros.efthymiou.groovy.remote
 
 
-import android.util.Log
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import petros.efthymiou.groovy.domain.PlayList
 import petros.efthymiou.groovy.domain.Result
+import petros.efthymiou.groovy.utils.wrapEspressoIdlingResource
 import javax.inject.Inject
 
 class PlayListService @Inject constructor(private val remoteService:RemoteService){
 
     suspend fun fetchPlayList(): Flow<Result<List<PlayList>>> {
 
-         return try {
 
-             Log.e(null, "fetchPlayList: success", )
 
-             val list = remoteService.getList().toDomain()
-             flow {
+       return wrapEspressoIdlingResource { flow {
 
-                 emit(Result.Success(list))
-             }
+           val list = remoteService.getList().toDomain()
+           emit(Result.Loading())
+           emit(Result.Success(list))
+       }.catch {
+           emit(Result.Error("Fetching List Failed!!"))
+       } }
 
-         }catch(e:Exception) {
-             Log.e(null, "fetchPlayList: ${e.message}", )
-             flow {
-                 emit(Result.Error("Fetching List Failed!!"))
-             }
-         }
 
-     }
+
+
+
 
 }
+}
+
+
+
