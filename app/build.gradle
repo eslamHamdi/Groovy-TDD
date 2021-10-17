@@ -42,9 +42,9 @@ android {
     testOptions {
         animationsDisabled = true
         unitTests.returnDefaultValues = true
-//        unitTests {
-//            includeAndroidResources = true
-//        }
+        unitTests {
+            includeAndroidResources = true
+        }
     }
 
     buildFeatures {

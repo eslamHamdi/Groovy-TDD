@@ -20,7 +20,7 @@ private lateinit var binding: PlaylistItemBinding
     {
         fun bind(item:PlayList)
         {
-            binding.playListImage.setImageResource(R.mipmap.playlist)
+            binding.playListImage.setImageResource(item.image)
             binding.playListCategory.text = item.category
             binding.playListName.text = item.name
         }

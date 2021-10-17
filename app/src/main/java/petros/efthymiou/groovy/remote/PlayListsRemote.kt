@@ -1,6 +1,7 @@
 package petros.efthymiou.groovy.remote
 
 import com.google.gson.annotations.SerializedName
+import petros.efthymiou.groovy.R
 import petros.efthymiou.groovy.domain.PlayList
 
 data class PlayListsRemote(
@@ -25,6 +26,10 @@ data class PlayListsRemoteItem(
  {
 	 return this?.map {
 
-	 	PlayList(category = it?.category!!,name = it.name!!,id = it.id!!)
+		 var drawable:Int = R.mipmap.playlist
+		 if (it?.category=="rock")
+		 	drawable = R.mipmap.rock
+
+	 	PlayList(category = it?.category!!,name = it.name!!,id = it.id!!,image = drawable)
 	 }!!
  }

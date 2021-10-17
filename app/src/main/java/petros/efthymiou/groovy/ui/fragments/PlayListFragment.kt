@@ -46,14 +46,15 @@ class PlayListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         Log.e(null, "onCreateView: created", )
-        //binding.lifecycleOwner = this
+        binding.lifecycleOwner = this
+        binding.viewModel = viewModel
         adapter = PlayListsAdapter()
 
         val recycler = binding.playListRecycler
         recycler.adapter = adapter
         getAdapterList()
         observeList()
-        observeLoader()
+
     }
 
     private fun observeList() {
@@ -72,15 +73,15 @@ class PlayListFragment : Fragment() {
 
     }
 
-    private fun observeLoader()
-    {
-        viewModel.progressLiveData.observe(viewLifecycleOwner){
-            if (it)
-            binding.progressBar.visibility = View.VISIBLE
-            else
-                binding.progressBar.visibility = View.GONE
-        }
-    }
+//    private fun observeLoader()
+//    {
+//        viewModel.progressLiveData.observe(viewLifecycleOwner){
+//            if (it)
+//            binding.progressBar.visibility = View.VISIBLE
+//            else
+//                binding.progressBar.visibility = View.GONE
+//        }
+//    }
 
     private fun getAdapterList()
     {
