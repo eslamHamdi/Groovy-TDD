@@ -54,7 +54,7 @@ class PlayListRepositoryShould
     }
 
     @Test
-    fun invokeServiceFetchPlayList()= runBlockingTest {
+    fun invokeServiceFetchPlayList()= coroutineTestRule.runBlockingTest {
 
         repository?.getPlayLists()
 
@@ -63,7 +63,7 @@ class PlayListRepositoryShould
 
 
     @Test
-    fun emitTheSameListObtainedFromService()= runBlockingTest {
+    fun emitTheSameListObtainedFromService()= coroutineTestRule.runBlockingTest {
         whenever(service?.fetchPlayList()).thenReturn (
             flow{
                 emit(Result.Success(playList))
@@ -77,7 +77,7 @@ class PlayListRepositoryShould
     }
 
     @Test
-    fun propagateErrors()= runBlockingTest {
+    fun propagateErrors()= coroutineTestRule.runBlockingTest {
 
         whenever(service?.fetchPlayList()).thenReturn (
             flow{
@@ -93,7 +93,7 @@ class PlayListRepositoryShould
     }
 
     @Test
-    fun propagateLoadingStatus()= runBlockingTest {
+    fun propagateLoadingStatus()= coroutineTestRule.runBlockingTest {
 
         repository?.getPlayLists()?.takeWhile {
             it is Result.Loading

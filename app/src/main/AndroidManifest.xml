@@ -15,8 +15,8 @@
         android:usesCleartextTraffic="true"
         android:theme="@style/Theme.Groovy"
         tools:targetApi="m">
-        <activity android:name=".ui.MainActivity"
-            android:label="@string/playListScreenTitle">
+        <activity android:name=".ui.MainActivity">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

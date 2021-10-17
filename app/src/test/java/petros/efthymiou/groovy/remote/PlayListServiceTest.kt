@@ -51,7 +51,7 @@ class PlayListServiceShould
 
 
     @Test
-    fun getPlayListsFromRemoteService() = runBlockingTest {
+    fun getPlayListsFromRemoteService() = coroutineTestRule.runBlockingTest {
         playListService?.fetchPlayList()?.first()
 
        verify(remoteService, times(1))?.getList()
@@ -59,7 +59,7 @@ class PlayListServiceShould
 
 
     @Test
-    fun wrapTheFetchedListIntoResult() = runBlockingTest {
+    fun wrapTheFetchedListIntoResult() = coroutineTestRule.runBlockingTest {
 
         whenever(remoteService?.getList()).thenReturn(playList)
 
@@ -76,7 +76,7 @@ class PlayListServiceShould
 
 
     @Test
-    fun wrapTheErrorIntoResult() = runBlockingTest {
+    fun wrapTheErrorIntoResult() = coroutineTestRule.runBlockingTest {
 
         whenever(remoteService?.getList()).thenThrow(RuntimeException(""))
 
@@ -89,7 +89,7 @@ class PlayListServiceShould
 
 
     @Test
-    fun emitLoadingStatus()= runBlockingTest {
+    fun emitLoadingStatus()= coroutineTestRule.runBlockingTest {
 
         playListService?.fetchPlayList()?.takeWhile {
             it is Result.Loading

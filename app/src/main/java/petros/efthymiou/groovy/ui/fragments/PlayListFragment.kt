@@ -11,6 +11,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.transition.Visibility
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.InternalCoroutinesApi
@@ -22,7 +23,7 @@ import petros.efthymiou.groovy.ui.adapters.PlayListsAdapter
 
 @AndroidEntryPoint
 @InternalCoroutinesApi
-class PlayListFragment : Fragment() {
+class PlayListFragment : Fragment(),PlayListsAdapter.ItemClickListener {
 
     @InternalCoroutinesApi
     //val viewModel:MainViewModel by activityViewModels()
@@ -49,6 +50,7 @@ class PlayListFragment : Fragment() {
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
         adapter = PlayListsAdapter()
+        adapter.clickListener = this
 
         val recycler = binding.playListRecycler
         recycler.adapter = adapter
@@ -89,6 +91,11 @@ class PlayListFragment : Fragment() {
         lifecycleScope.launch {
             viewModel.getPlayLists()
         }
+    }
+
+    override fun clicked(id: String) {
+
+        findNavController().navigate(R.id.playListDetailsFragment)
     }
 
 

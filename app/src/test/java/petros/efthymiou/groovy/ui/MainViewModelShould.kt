@@ -55,7 +55,7 @@ class MainViewModelShould {
     }
 
     @Test
-    fun getPlayListsFromRepository() = runBlockingTest {
+    fun getPlayListsFromRepository() = coroutineTestRule.runBlockingTest {
 
         //mocking repository to make use of verify making sure that getPlayLists() invoked
         val repository = mock(FakePlayListRepository::class.java)
@@ -67,7 +67,7 @@ class MainViewModelShould {
     }
 
     @Test
-    fun emitTheCorrectPlayList()= runBlockingTest {
+    fun emitTheCorrectPlayList()= coroutineTestRule.runBlockingTest {
 
 
         viewModel?.getPlayLists()
@@ -76,7 +76,7 @@ class MainViewModelShould {
 
 
     @Test
-    fun emitErrorIfGettingListIsFailed() = runBlockingTest{
+    fun emitErrorIfGettingListIsFailed() = coroutineTestRule.runBlockingTest{
 
 
         repository?.setError(true)
@@ -93,7 +93,7 @@ class MainViewModelShould {
 
 
     @Test
-    fun showLoaderWhileGettigList()= runBlockingTest {
+    fun showLoaderWhileGettigList()= coroutineTestRule.runBlockingTest {
 
         mockLoadingCase()
 
@@ -103,7 +103,7 @@ class MainViewModelShould {
 
 
     @Test
-    fun hideLoaderWhenFetchingEnds()= runBlockingTest {
+    fun hideLoaderWhenFetchingEnds()= coroutineTestRule.runBlockingTest {
 
         mockSuccessCase()
 
@@ -113,7 +113,7 @@ class MainViewModelShould {
 
 
     @Test
-    fun hideLoaderWhenFetchingFails()= runBlockingTest {
+    fun hideLoaderWhenFetchingFails()= coroutineTestRule.runBlockingTest {
 
         mockErrorCase()
 

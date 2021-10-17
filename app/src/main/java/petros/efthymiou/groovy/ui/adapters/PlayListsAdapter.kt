@@ -35,6 +35,9 @@ private lateinit var binding: PlaylistItemBinding
     override fun onBindViewHolder(holder: PlayListsViewHolder, position: Int) {
         val playList = getItem(position)
         holder.bind(playList)
+        binding.playListContainer.setOnClickListener {
+            clickListener?.clicked(playList.id)
+        }
     }
 
     companion object  DiffCallBack: DiffUtil.ItemCallback<PlayList>()
@@ -48,5 +51,12 @@ private lateinit var binding: PlaylistItemBinding
             return oldItem == newItem
         }
 
+    }
+
+    var clickListener:ItemClickListener? = null
+
+    interface ItemClickListener
+    {
+        fun clicked(id:String)
     }
 }

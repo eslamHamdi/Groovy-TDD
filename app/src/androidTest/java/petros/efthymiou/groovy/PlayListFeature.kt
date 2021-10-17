@@ -8,6 +8,7 @@ import androidx.test.espresso.IdlingRegistry
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.filters.LargeTest
 import com.adevinta.android.barista.assertion.BaristaRecyclerViewAssertions.assertRecyclerViewItemCount
 import com.adevinta.android.barista.assertion.BaristaVisibilityAssertions.assertDisplayed
 import com.adevinta.android.barista.assertion.BaristaVisibilityAssertions.assertNotDisplayed
@@ -32,6 +33,7 @@ import petros.nthChildOf
 @InternalCoroutinesApi
 @ExperimentalCoroutinesApi
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
+@LargeTest
 class PlayListFeature {
 
 
