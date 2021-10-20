@@ -35,7 +35,7 @@ private lateinit var binding: PlaylistItemBinding
     override fun onBindViewHolder(holder: PlayListsViewHolder, position: Int) {
         val playList = getItem(position)
         holder.bind(playList)
-        binding.playListContainer.setOnClickListener {
+        binding.itemContainer.setOnClickListener {
             clickListener?.clicked(playList.id)
         }
     }

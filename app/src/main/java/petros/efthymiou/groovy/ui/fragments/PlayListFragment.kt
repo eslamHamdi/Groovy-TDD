@@ -19,6 +19,7 @@ import kotlinx.coroutines.launch
 import petros.efthymiou.groovy.R
 import petros.efthymiou.groovy.databinding.FragmentPlayListBinding
 import petros.efthymiou.groovy.ui.adapters.PlayListsAdapter
+import petros.efthymiou.groovy.utils.wrapEspressoIdlingResource
 
 
 @AndroidEntryPoint
@@ -61,16 +62,19 @@ class PlayListFragment : Fragment(),PlayListsAdapter.ItemClickListener {
 
     private fun observeList() {
 
-        viewModel.playList.observe(viewLifecycleOwner){
-            Log.e(null, "observe: entered", )
-            if (it != null)
-            {
-                Log.e(null, "observe: $it ", )
 
-                adapter.submitList(it)
+            viewModel.playList.observe(viewLifecycleOwner){
+                Log.e(null, "observe: entered", )
+                if (it != null)
+                {
+                    Log.e(null, "observe: $it ", )
 
+                    adapter.submitList(it)
+
+                }
             }
-        }
+
+
 
 
     }

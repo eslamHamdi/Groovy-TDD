@@ -8,7 +8,8 @@
     <fragment
         android:id="@+id/playListFragment"
         android:name="petros.efthymiou.groovy.ui.fragments.PlayListFragment"
-        android:label="@string/playListScreenTitle">
+        android:label="@string/playListScreenTitle"
+        tools:layout="@layout/fragment_play_list">
         <action
             android:id="@+id/action_playListFragment_to_playListDetailsFragment"
             app:destination="@id/playListDetailsFragment" />

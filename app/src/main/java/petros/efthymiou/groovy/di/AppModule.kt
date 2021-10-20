@@ -54,13 +54,13 @@ object AppModule {
         return PlayListRepository(service)
     }
 
-    @InternalCoroutinesApi
-    @Provides
-    @Singleton
-    fun provideMainViewModel(repository: DataSource): MainViewModel
-    {
-        return MainViewModel(repository)
-    }
+//    @InternalCoroutinesApi
+//    @Provides
+//    @Singleton
+//    fun provideMainViewModel(repository: DataSource): MainViewModel
+//    {
+//        return MainViewModel(repository)
+//    }
 
 
 

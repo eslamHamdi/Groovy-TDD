@@ -28,7 +28,7 @@
             />
 
 
-        <!-- TODO: Update blank fragment layout -->
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/playList_recycler"
             app:layout_constraintStart_toStartOf="parent"

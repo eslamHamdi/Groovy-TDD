@@ -5,10 +5,10 @@
       <map>
         <entry key="..\:/Users/Eslam/AndroidStudioProjects/Groovy/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1859375" />
         <entry key="..\:/Users/Eslam/AndroidStudioProjects/Groovy/app/src/main/res/drawable/ic_launcher_background.xml" value="0.1859375" />
-        <entry key="..\:/Users/Eslam/AndroidStudioProjects/Groovy/app/src/main/res/layout/activity_main.xml" value="0.13020833333333334" />
-        <entry key="..\:/Users/Eslam/AndroidStudioProjects/Groovy/app/src/main/res/layout/fragment_play_list.xml" value="0.13020833333333334" />
+        <entry key="..\:/Users/Eslam/AndroidStudioProjects/Groovy/app/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="..\:/Users/Eslam/AndroidStudioProjects/Groovy/app/src/main/res/layout/fragment_play_list.xml" value="0.1" />
         <entry key="..\:/Users/Eslam/AndroidStudioProjects/Groovy/app/src/main/res/layout/fragment_play_list_details.xml" value="0.1" />
-        <entry key="..\:/Users/Eslam/AndroidStudioProjects/Groovy/app/src/main/res/layout/playlist_item.xml" value="0.12138728323699421" />
+        <entry key="..\:/Users/Eslam/AndroidStudioProjects/Groovy/app/src/main/res/layout/playlist_item.xml" value="0.1" />
         <entry key="..\:/Users/Eslam/AndroidStudioProjects/Groovy/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.1859375" />
       </map>
     </option>
