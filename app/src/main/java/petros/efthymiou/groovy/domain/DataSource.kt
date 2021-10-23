@@ -6,4 +6,5 @@ interface DataSource {
 
 
    suspend fun getPlayLists(): Flow<Result<List<PlayList>>>
+   suspend fun getListDetails(id:String): Flow<Result<DomainListDetails>>
 }

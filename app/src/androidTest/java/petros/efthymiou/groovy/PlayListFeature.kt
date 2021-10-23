@@ -9,12 +9,15 @@ import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
+import com.adevinta.android.barista.assertion.BaristaProgressBarAssertions.assertProgress
 import com.adevinta.android.barista.assertion.BaristaRecyclerViewAssertions.assertRecyclerViewItemCount
 import com.adevinta.android.barista.assertion.BaristaVisibilityAssertions.assertDisplayed
 import com.adevinta.android.barista.assertion.BaristaVisibilityAssertions.assertNotDisplayed
 import com.adevinta.android.barista.internal.matcher.DrawableMatcher.Companion.withDrawable
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.runBlocking
 import org.hamcrest.CoreMatchers.allOf
 import org.junit.After
 import org.junit.Before
@@ -91,11 +94,16 @@ private lateinit var activityScenario:ActivityScenario<MainActivity>
     }
 
     @Test
-    fun check_1_IfLoaderIsDisplayedDuringFetching(){
-        IdlingRegistry.getInstance().unregister(EspressoIdlingResource.countingIdlingResource)
-        IdlingRegistry.getInstance().unregister(dataBindingIdlingResource)
+    fun check_1_IfLoaderIsDisplayedDuringFetching() = runBlocking {
+//        //dataBindingIdlingResource.monitorActivity(activityScenario)
+//        IdlingRegistry.getInstance().unregister(EspressoIdlingResource.countingIdlingResource)
+//      IdlingRegistry.getInstance().unregister(dataBindingIdlingResource)
+//
+//      assertProgress(R.id.progress_bar,0)
+//           onView(withId(R.id.progress_bar)).check(matches(withEffectiveVisibility(Visibility.VISIBLE)))
+//        //assertDisplayed(R.id.progress_bar)
+//        delay(2000)
 
-        assertDisplayed(R.id.progress_bar)
 
 
 

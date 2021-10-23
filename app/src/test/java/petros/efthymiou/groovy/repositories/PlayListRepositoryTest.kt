@@ -17,6 +17,7 @@ import org.mockito.kotlin.mock
 import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
+import petros.efthymiou.groovy.domain.DomainListDetails
 import petros.efthymiou.groovy.domain.PlayList
 import petros.efthymiou.groovy.domain.Result
 import petros.efthymiou.groovy.remote.PlayListService
@@ -36,6 +37,7 @@ class PlayListRepositoryShould
      private var repository: PlayListRepository? = null
      private var service: PlayListService? = null
     private val playList = mock<List<PlayList>>()
+    private val listDetails = mock<DomainListDetails>()
 
 
     @Before
@@ -103,6 +105,53 @@ class PlayListRepositoryShould
 
     }
 
+    @Test
+    fun invokeServiceFetchPlayListDetails()= coroutineTestRule.runBlockingTest {
+
+        repository?.getListDetails("1")
+
+        verify(service, times(1))?.fetchPlayListDetails("1")
+    }
+
+    @Test
+    fun emitTheSameListDetailsObtainedFromService()= coroutineTestRule.runBlockingTest {
+        mockDetailSuccessCase()
+
+        val result = repository?.getListDetails("1")?.first() as Result.Success
+
+
+        assertThat(listDetails).isEqualTo(result.data)
+    }
+
+
+
+    @Test
+    fun propagateDetailErrors()= coroutineTestRule.runBlockingTest {
+
+        mockDetailErrorCase()
+
+        val result = repository?.getListDetails("1")?.first() as Result.Error
+
+        assertThat("Failed!!").isEqualTo(result.message)
+
+
+    }
+
+    private fun mockDetailErrorCase() {
+        whenever(service?.fetchPlayListDetails("1")).thenReturn(
+            flow {
+                emit(Result.Error("Failed!!"))
+            }
+        )
+    }
+
+    private fun mockDetailSuccessCase() {
+        whenever(service?.fetchPlayListDetails("1")).thenReturn(
+            flow {
+                emit(Result.Success(listDetails))
+            }
+        )
+    }
 
 
 }

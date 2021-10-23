@@ -16,6 +16,7 @@ import org.mockito.kotlin.mock
 import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
+import petros.efthymiou.groovy.domain.DomainListDetails
 import petros.efthymiou.groovy.domain.PlayList
 import petros.efthymiou.groovy.domain.Result
 import petros.efthymiou.groovy.utils.MainCoroutineScopeRule
@@ -26,6 +27,7 @@ class PlayListServiceShould
     private var playListService:PlayListService? = null
     private var remoteService:RemoteService? = null
     private val playList = mock<List<PlayListsRemoteItem>>()
+    private val listDetails = mock<ListDetails>()
 
     @get:Rule
     var coroutineTestRule = MainCoroutineScopeRule()
@@ -99,6 +101,53 @@ class PlayListServiceShould
 
 
     }
+
+    @Test
+    fun getListDetailsFromRemoteService() = coroutineTestRule.runBlockingTest {
+        playListService?.fetchPlayListDetails("1")?.first()
+
+        verify(remoteService, times(1))?.getdetails("1")
+    }
+
+
+    @Test
+    fun wrapTheFetchedDetailsIntoResult() = coroutineTestRule.runBlockingTest {
+
+        whenever(remoteService?.getdetails("1")).thenReturn(listDetails)
+
+        playListService?.fetchPlayListDetails("1")?.takeWhile {
+            it is Result.Success
+        }?.collect {
+            assertThat(it).isEqualTo(Result.Success(listDetails.toDomain()))
+        }
+
+
+    }
+
+    @Test
+    fun wrapTheDetailsErrorIntoResult() = coroutineTestRule.runBlockingTest {
+
+        whenever(remoteService?.getdetails("1")).thenThrow(RuntimeException(""))
+
+        val result:Result<DomainListDetails> = playListService?.fetchPlayListDetails("1")?.first()!!
+
+
+        assertThat(Result.Error("fetching List Details Failed")).isEqualTo(result)
+
+    }
+
+    @Test
+    fun emitLoadingStatusForDetails()= coroutineTestRule.runBlockingTest {
+
+        playListService?.fetchPlayListDetails("1")?.takeWhile {
+            it is Result.Loading
+        }?.collect {
+            assertThat(it).isEqualTo(Result.Loading<DomainListDetails>())
+        }
+
+
+    }
+
 
 
 }

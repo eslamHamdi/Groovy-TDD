@@ -2,6 +2,7 @@ package petros.efthymiou.groovy.remote
 
 
 import kotlinx.coroutines.flow.*
+import petros.efthymiou.groovy.domain.DomainListDetails
 import petros.efthymiou.groovy.domain.PlayList
 import petros.efthymiou.groovy.domain.Result
 import petros.efthymiou.groovy.utils.wrapEspressoIdlingResource
@@ -28,6 +29,18 @@ class PlayListService @Inject constructor(private val remoteService:RemoteServic
 
 
 }
+
+    fun fetchPlayListDetails(id:String):Flow<Result<DomainListDetails>> {
+
+        return wrapEspressoIdlingResource { flow {
+            val details = remoteService.getdetails(id).toDomain()
+            emit(Result.Loading())
+            emit(Result.Success(details))
+        }.catch {
+            emit(Result.Error(message = "fetching List Details Failed"))
+        }
+        }
+    }
 }
 
 

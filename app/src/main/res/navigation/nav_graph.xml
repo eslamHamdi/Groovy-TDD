@@ -18,5 +18,9 @@
         android:id="@+id/playListDetailsFragment"
         android:name="petros.efthymiou.groovy.ui.fragments.PlayListDetailsFragment"
         android:label="@string/ListDetails"
-        tools:layout="@layout/fragment_play_list_details" />
+        tools:layout="@layout/fragment_play_list_details" >
+        <argument
+            android:name="list_id"
+            app:argType="string" />
+    </fragment>
 </navigation>

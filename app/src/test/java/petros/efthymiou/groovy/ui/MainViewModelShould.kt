@@ -120,6 +120,42 @@ class MainViewModelShould {
         assertThat(viewModel!!.progressLiveData.getValueForTest()).isFalse()
     }
 
+    @Test
+    fun getPlayListDetails() = runBlockingTest {
+        val repository = mock(FakePlayListRepository::class.java)
+        viewModel = MainViewModel(repository)
+        val id = "1"
+
+        viewModel?.getPlayListsDetails(id)
+
+        verify(repository, times(1))?.getListDetails(id)
+    }
+
+    @Test
+    fun emitTheCorrectPlayListDetails()= coroutineTestRule.runBlockingTest {
+
+
+        viewModel?.getPlayListsDetails("1")
+        assertThat(viewModel?.playListDetails?.getValueForTest()).isEqualTo(repository?.detailList)
+    }
+
+
+    @Test
+    fun emitErrorIfGettingListDetailsIsFailed() = coroutineTestRule.runBlockingTest{
+
+
+        repository?.setError(true)
+
+        val expected ="Failed"
+
+        viewModel?.getPlayListsDetails("1")
+
+        assertThat(viewModel?.errorState?.getValueForTest()).isEqualTo(expected)
+
+
+
+    }
+
 
 
     private suspend fun mockLoadingCase() {
@@ -146,5 +182,8 @@ class MainViewModelShould {
         viewModel!!.getPlayLists()
     }
     }
+
+
+
 
 

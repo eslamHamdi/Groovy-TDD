@@ -99,7 +99,7 @@ class PlayListFragment : Fragment(),PlayListsAdapter.ItemClickListener {
 
     override fun clicked(id: String) {
 
-        findNavController().navigate(R.id.playListDetailsFragment)
+        findNavController().navigate(PlayListFragmentDirections.actionPlayListFragmentToPlayListDetailsFragment(id))
     }
 
 

@@ -3,19 +3,35 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        <variable
+            name="detailItem"
+            type="petros.efthymiou.groovy.domain.DomainListDetails" />
 
     </data>
 
-    <FrameLayout
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="5dp"
         tools:context=".ui.fragments.PlayListDetailsFragment">
 
-        <!-- TODO: Update blank fragment layout -->
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="@string/hello_blank_fragment" />
 
-    </FrameLayout>
+        <TextView
+            android:id="@+id/listTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{detailItem.name}"
+            android:textSize="24sp"
+            android:textColor="@color/purple_700"
+            android:layout_marginBottom="5dp"/>
+
+        <TextView
+            android:id="@+id/listDetails"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{detailItem.details}"
+            android:textSize="18sp"/>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
 </layout>
