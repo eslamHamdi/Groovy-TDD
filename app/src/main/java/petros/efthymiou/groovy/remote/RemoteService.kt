@@ -6,9 +6,9 @@ import retrofit2.http.Path
 interface RemoteService {
 
     @GET("/playlists")
-    suspend fun getList():List<PlayListsRemoteItem?>?
+    suspend fun getList(): List<PlayListsRemoteItem?>?
 
     @GET("/playlists-details/{id}")
-    suspend fun getdetails(@Path("id") id:String):ListDetails
+    suspend fun getdetails(@Path("id") id: String): ListDetails
 
 }

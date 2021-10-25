@@ -1,25 +1,20 @@
 package petros.efthymiou.groovy.ui.adapters
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
-
 import androidx.recyclerview.widget.RecyclerView
-import petros.efthymiou.groovy.R
 import petros.efthymiou.groovy.databinding.PlaylistItemBinding
 import petros.efthymiou.groovy.domain.PlayList
 
-class PlayListsAdapter: ListAdapter<PlayList, PlayListsAdapter.PlayListsViewHolder>(DiffCallBack) {
+class PlayListsAdapter : ListAdapter<PlayList, PlayListsAdapter.PlayListsViewHolder>(DiffCallBack) {
 
-private lateinit var binding: PlaylistItemBinding
+    private lateinit var binding: PlaylistItemBinding
 
-    class PlayListsViewHolder(private val binding: PlaylistItemBinding):RecyclerView.ViewHolder(binding.root)
-    {
-        fun bind(item:PlayList)
-        {
+    class PlayListsViewHolder(private val binding: PlaylistItemBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        fun bind(item: PlayList) {
             binding.playListImage.setImageResource(item.image)
             binding.playListCategory.text = item.category
             binding.playListName.text = item.name
@@ -27,7 +22,7 @@ private lateinit var binding: PlaylistItemBinding
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlayListsViewHolder {
-        binding = PlaylistItemBinding.inflate(LayoutInflater.from(parent.context),parent,false)
+        binding = PlaylistItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
 
         return PlayListsViewHolder(binding)
     }
@@ -40,8 +35,7 @@ private lateinit var binding: PlaylistItemBinding
         }
     }
 
-    companion object  DiffCallBack: DiffUtil.ItemCallback<PlayList>()
-    {
+    companion object DiffCallBack : DiffUtil.ItemCallback<PlayList>() {
         override fun areItemsTheSame(oldItem: PlayList, newItem: PlayList): Boolean {
 
             return oldItem.id == newItem.id
@@ -53,10 +47,9 @@ private lateinit var binding: PlaylistItemBinding
 
     }
 
-    var clickListener:ItemClickListener? = null
+    var clickListener: ItemClickListener? = null
 
-    interface ItemClickListener
-    {
-        fun clicked(id:String)
+    interface ItemClickListener {
+        fun clicked(id: String)
     }
 }

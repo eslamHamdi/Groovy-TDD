@@ -12,7 +12,9 @@
         tools:layout="@layout/fragment_play_list">
         <action
             android:id="@+id/action_playListFragment_to_playListDetailsFragment"
-            app:destination="@id/playListDetailsFragment" />
+            app:destination="@id/playListDetailsFragment"
+            app:popUpTo="@id/playListFragment"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/playListDetailsFragment"

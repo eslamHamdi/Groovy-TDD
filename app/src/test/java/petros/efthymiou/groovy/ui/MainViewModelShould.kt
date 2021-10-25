@@ -15,8 +15,10 @@ import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 import petros.efthymiou.groovy.domain.DataSource
+import petros.efthymiou.groovy.domain.DomainListDetails
 import petros.efthymiou.groovy.domain.Result
 import petros.efthymiou.groovy.repositories.FakePlayListRepository
+import petros.efthymiou.groovy.repositories.PlayListRepository
 import petros.efthymiou.groovy.ui.fragments.MainViewModel
 import petros.efthymiou.groovy.utils.MainCoroutineScopeRule
 import petros.efthymiou.groovy.utils.getValueForTest
@@ -131,6 +133,7 @@ class MainViewModelShould {
         verify(repository, times(1))?.getListDetails(id)
     }
 
+
     @Test
     fun emitTheCorrectPlayListDetails()= coroutineTestRule.runBlockingTest {
 
@@ -154,6 +157,34 @@ class MainViewModelShould {
 
 
 
+    }
+
+    @Test
+    fun showLoaderWhileGettigListDetails()= coroutineTestRule.runBlockingTest {
+
+        mockLoadingCaseinDetailFragment()
+
+        assertThat(viewModel!!.progressDetailsLiveData.getValueForTest()).isTrue()
+    }
+
+
+
+    @Test
+    fun hideLoaderWhenFetchingDetailsEnds()= coroutineTestRule.runBlockingTest {
+
+        mockSuccessCaseinDetailFragment()
+
+        assertThat(viewModel!!.progressDetailsLiveData.getValueForTest()).isFalse()
+    }
+
+
+
+    @Test
+    fun hideLoaderWhenFetchingDetailsFails()= coroutineTestRule.runBlockingTest {
+
+        mockErrorCaseinDetailFragment()
+
+        assertThat(viewModel!!.progressDetailsLiveData.getValueForTest()).isFalse()
     }
 
 
@@ -180,6 +211,31 @@ class MainViewModelShould {
         whenever(repository.getPlayLists()).thenReturn(flowOf(Result.Error("failed!!")))
         viewModel = MainViewModel(repository)
         viewModel!!.getPlayLists()
+    }
+
+    private suspend fun mockLoadingCaseinDetailFragment() {
+        val repository = mock(PlayListRepository::class.java)
+
+        whenever(repository.getListDetails("1")).thenReturn(flowOf(Result.Loading()))
+        viewModel = MainViewModel(repository)
+        viewModel!!.getPlayListsDetails("1")
+    }
+
+    private suspend fun mockSuccessCaseinDetailFragment() {
+        val repository = mock(PlayListRepository::class.java)
+
+        whenever(repository.getListDetails("1")).thenReturn(flowOf(Result.Success(
+            DomainListDetails())))
+        viewModel = MainViewModel(repository)
+        viewModel!!.getPlayListsDetails("1")
+    }
+
+    private suspend fun mockErrorCaseinDetailFragment() {
+        val repository = mock(PlayListRepository::class.java)
+
+        whenever(repository.getListDetails("1")).thenReturn(flowOf(Result.Error("failed!!")))
+        viewModel = MainViewModel(repository)
+        viewModel!!.getPlayListsDetails("1")
     }
     }
 

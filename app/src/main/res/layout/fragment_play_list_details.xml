@@ -5,7 +5,10 @@
     <data>
         <variable
             name="detailItem"
-            type="petros.efthymiou.groovy.domain.DomainListDetails" />
+            type="petros.efthymiou.groovy.domain.DomainListDetails"/>
+            <variable
+                name="viewModel"
+                type="petros.efthymiou.groovy.ui.fragments.MainViewModel"/>
 
     </data>
 
@@ -32,6 +35,14 @@
             android:layout_height="wrap_content"
             android:text="@{detailItem.details}"
             android:textSize="18sp"/>
+
+        <ProgressBar
+            android:id="@+id/details_progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:layout_gravity="center_horizontal"
+            ProgressState="@{viewModel.progressDetailsLiveData}"/>
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 </layout>

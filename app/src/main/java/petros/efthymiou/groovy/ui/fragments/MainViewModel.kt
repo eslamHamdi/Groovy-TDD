@@ -14,87 +14,82 @@ import petros.efthymiou.groovy.domain.DomainListDetails
 import petros.efthymiou.groovy.domain.PlayList
 import petros.efthymiou.groovy.domain.Result
 import petros.efthymiou.groovy.utils.SingleLiveEvent
-import petros.efthymiou.groovy.utils.wrapEspressoIdlingResource
 import javax.inject.Inject
 
 @InternalCoroutinesApi
 @HiltViewModel
-class MainViewModel @Inject constructor(private val repositoy:DataSource): ViewModel() {
+class MainViewModel @Inject constructor(private val repositoy: DataSource) : ViewModel() {
 
-    private val _playLists:MutableLiveData<List<PlayList>> = MutableLiveData()
+    private val _playLists: MutableLiveData<List<PlayList>> = MutableLiveData()
 
-    val playList:LiveData<List<PlayList>>
-            get() = _playLists
+    val playList: LiveData<List<PlayList>>
+        get() = _playLists
 
-    private val _errorState:SingleLiveEvent<String> = SingleLiveEvent()
+    private val _errorState: SingleLiveEvent<String> = SingleLiveEvent()
 
-    val errorState:SingleLiveEvent<String>
+    val errorState: SingleLiveEvent<String>
         get() = _errorState
 
-    private var _progressLiveData:MutableLiveData<Boolean> = MutableLiveData(true)
+    private var _progressLiveData: MutableLiveData<Boolean> = MutableLiveData(true)
 
-    val progressLiveData:LiveData<Boolean>
-    get() = _progressLiveData
+    val progressLiveData: LiveData<Boolean>
+        get() = _progressLiveData
+
+    private var _progressDetailsLiveData: MutableLiveData<Boolean> = MutableLiveData(true)
+    val progressDetailsLiveData: LiveData<Boolean>
+        get() = _progressDetailsLiveData
 
 
-    private val _playListDetails:MutableLiveData<DomainListDetails> = MutableLiveData()
+    private val _playListDetails: MutableLiveData<DomainListDetails> = MutableLiveData()
 
-    val playListDetails:LiveData<DomainListDetails>
+    val playListDetails: LiveData<DomainListDetails>
         get() = _playListDetails
 
 
+    suspend fun getPlayLists() {
+        viewModelScope.launch {
+
+            repositoy.getPlayLists().collect {
+                if (it is Result.Success) {
+                    _playLists.value = (it.data)
+                    _progressLiveData.postValue(false)
+
+                    Log.e(null, "getPlayLists: success ")
+                } else if (it is Result.Error) {
+                    _errorState.value = (it.message)
+                    _progressLiveData.postValue(false)
+
+                    Log.e(null, "getPlayLists: ${it.message}")
 
 
-
-    suspend fun getPlayLists(){
-         viewModelScope.launch {
-
- repositoy.getPlayLists().collect {
-    if (it is Result.Success)
-    {
-        _playLists.value =(it.data)
-        _progressLiveData.postValue(false)
-
-        Log.e(null, "getPlayLists: success ", )
-    }
-    else if (it is Result.Error)
-    {
-        _errorState.value =(it.message)
-        _progressLiveData.postValue(false)
-
-        Log.e(null, "getPlayLists: ${it.message}", )
-
-
-    }else if (it is Result.Loading)
-    {
-        _progressLiveData.postValue(true)
-    }
-}
-
+                } else if (it is Result.Loading) {
+                    _progressLiveData.postValue(true)
+                }
+            }
 
 
         }
 
 
-
-
-
-
     }
 
-    suspend fun getPlayListsDetails(id:String) {
+    suspend fun getPlayListsDetails(id: String) {
 
         viewModelScope.launch {
-            repositoy.getListDetails(id).collect{
+            repositoy.getListDetails(id).collect {
 
-                when(it)
-                {
-                    is Result.Success ->{
+                when (it) {
+                    is Result.Success -> {
 
-                        _playListDetails.postValue(it.data)
+                        _playListDetails.value = (it.data)
+                        _progressDetailsLiveData.value = false
                     }
-                    is Result.Error ->{
-                        _errorState.postValue(it.message)
+                    is Result.Error -> {
+                        _errorState.value = (it.message)
+                        _progressDetailsLiveData.value = false
+                    }
+                    else -> {
+                        _progressDetailsLiveData.value = true
                     }
                 }
 

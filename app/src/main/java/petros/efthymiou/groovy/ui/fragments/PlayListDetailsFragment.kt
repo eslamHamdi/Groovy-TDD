@@ -4,27 +4,27 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.launch
-import petros.efthymiou.groovy.R
 import petros.efthymiou.groovy.databinding.FragmentPlayListDetailsBinding
-import javax.inject.Inject
 
 @InternalCoroutinesApi
 @AndroidEntryPoint
 class PlayListDetailsFragment : Fragment() {
 
-    lateinit var binding:FragmentPlayListDetailsBinding
+    lateinit var binding: FragmentPlayListDetailsBinding
 
 
-    val viewModel:MainViewModel by activityViewModels()
-private val args:PlayListDetailsFragmentArgs by navArgs()
+    val viewModel: MainViewModel by activityViewModels()
+    private val args: PlayListDetailsFragmentArgs by navArgs()
 
 
     override fun onCreateView(
@@ -43,20 +43,44 @@ private val args:PlayListDetailsFragmentArgs by navArgs()
         val id = args.listId
 
         binding.lifecycleOwner = this
+        binding.viewModel = viewModel
 
-       viewLifecycleOwner.lifecycleScope.launch {
-           observe(id)
-       }
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    findNavController().navigateUp()
+                }
+
+            })
+        viewLifecycleOwner.lifecycleScope.launch {
+            observe(id)
+        }
+        observeError()
+    }
+
+    private suspend fun observe(id: String) {
+
+        viewModel.getPlayListsDetails(id)
+        viewModel.playListDetails.observe(viewLifecycleOwner) {
+            binding.detailItem = it
+
+        }
+
 
     }
 
-   private suspend fun  observe(id:String){
+    private fun observeError() {
 
-       viewModel.getPlayListsDetails(id)
-       viewModel.playListDetails.observe(viewLifecycleOwner){
-           binding.detailItem = it
-
-       }
-
-   }
+        viewModel.errorState.observe(viewLifecycleOwner) {
+            Snackbar.make(this.requireView(), "fetching List Details Failed", Snackbar.LENGTH_LONG)
+                .show()
+        }
     }
+
+
+}
+
+
+
+
+
