@@ -60,7 +60,7 @@ playLists json : [
     "category": "mixed"
   }
  ]
- playListDetails : {
+- playListDetails : {
   "id": "1",
   "name": "Hard Rock Cafe",
   "details": "Rock your senses with this timeless signature vibe list. \n\n • Poison \n • You shook me all night \n • Zombie \n • Rock'n Me \n • Thunderstruck \n • I Hate Myself for Loving you \n • Crazy \n • Knockin' on Heavens Door"
@@ -76,6 +76,7 @@ playLists json : [
 ## Application Structure
 
 -app consists of 2 fragments 1- get the playLists from the api using retrofit , flow, liveData
+
                             2- get the playListDetails  from the api using retrofit ,flow,livedata,navArgs
                            
                             
