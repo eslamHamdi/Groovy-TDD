@@ -8,7 +8,7 @@ Groovy is an App Fetching music PlayLists from a mocked api demonstrating Test D
 
 ## How to Run
 -use mockoon to mock an api response(Get Request return a fake playLists and there metadata into separate json responses)
-playLists json : [
+- playLists json : [
   {
     "id": "1",
     "name": "Hard Rock Cafe",
