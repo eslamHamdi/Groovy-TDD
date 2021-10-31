@@ -66,7 +66,7 @@ Groovy is an App Fetching music PlayLists from a mocked api demonstrating Test D
   "details": "Rock your senses with this timeless signature vibe list. \n\n • Poison \n • You shook me all night \n • Zombie \n • Rock'n Me \n • Thunderstruck \n • I Hate Myself for Loving you \n • Crazy \n • Knockin' on Heavens Door"
 }
 
-- install the app and run using the emulator it should load the playLists lists
+- install the app and run using the emulator it should load the playLists list
 - clicking the first item should navigate you to the second screen showing its details
 - clicking any item other than the first one will result a snack bar with an error message
 - run all the unit tests using the test suite provided in the test source set to confirm functionality
